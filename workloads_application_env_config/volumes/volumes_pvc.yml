@@ -1,0 +1,8 @@
+#O PVC - Persistent Volume Clain. 
+#O Tamanho solicitado precisa ser igual ou menor que o tamanho do PV.
+
+#Ele vai buscar o melhor PV que se encaixa esse PVC...
+#Mas também pode forçar um PV pelo nome em specs:
+volumenName: primeiroPV
+
+#Ainda podem ser usado selectors pra buscar o melhor PV para o PVC.

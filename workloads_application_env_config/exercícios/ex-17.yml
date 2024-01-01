@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ex-17
+spec:
+  selector: 
+    matchLabels:
+      app: "ex-17"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: "ex-17"
+    spec:
+      containers:
+      - image: nginx
+        name: ex-17
+        resources: {}
+        ports:
+        - containerPort: 80
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always

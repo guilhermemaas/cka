@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: command
+spec:
+  containers:
+  - name: command
+    image: nginx
+    command: ["printf"]
+    args: ["bar"]
+  restartPolicy: OnFailure

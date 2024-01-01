@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: meu-rs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: web
+  template: #CONFIG DO POD
+    metadata:
+      labels:
+        tier: web
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        env:
+        - name: tier
+          value: "web"

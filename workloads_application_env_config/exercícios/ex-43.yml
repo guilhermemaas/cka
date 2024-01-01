@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: user-secret
+data:
+  user: c3VwZXJhZG1pbg==
+  password: bWluaGFzZW5oYXN1cGVyc2VndXJh

@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    resources: {}
+    env:
+    - name: MEUIP
+      valueFrom:
+        configMapKeyRef:
+          name: primeiro-cm
+          key: ip
+#    envFrom:
+#    - configMapRef:
+#        name: primeiro-cm
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always

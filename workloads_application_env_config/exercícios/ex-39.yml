@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ex-cm-pod1
+spec:
+  containers:
+  - image: nginx
+    name: ex-36
+    ports:
+    - containerPort: 80
+    env:
+    - name: ENVIRONMENT
+      valueFrom:
+        configMapKeyRef:
+          name: env-configs-kubectl
+          key: server

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: primeiro-cm
+data:
+  ip: "10.0.0.1"
+  server: "web"

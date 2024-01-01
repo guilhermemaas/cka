@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: ex-15
+  name: ex-15
+spec:
+  containers:
+  - image: busybox
+    name: ex-15
+    command: ["sleep"]
+    args: ["3600"]
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
