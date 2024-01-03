@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ingress-pod-c
+spec:
+  podSelector:
+    matchLabels:
+      run: pod-c
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    #Essa lista tem o seguinte comportamento:
+    #ou podSelector...
+    - podSelector:
+        matchLabels:
+          run: pod-a
+    #ou namespaceSelector... Ou uma regra, ou outra.
+    - namespaceSelector:
+        matchLabels:
+          acesso: liberado
+    ports:
+    - protocol: TCP
+      port: 80

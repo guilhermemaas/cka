@@ -34,4 +34,5 @@ kubectl run nginx5 --image nginx --env tier=b --port 80 --dry-run=client -o yaml
 #Listar todos os pods:
 kubectl get po -A
 
-#Containerd:
+#Listar quantidade total de pods running no cluster
+kubectl get po -A | grep -i running | wc -l
