@@ -1,3 +1,15 @@
+#DICAS VIM
+#Substituir strings:
+:%s/deploy-1/deploy-30
+
+#Selecionmar:
+v
+
+#Copiar múltiplas linhas?
+
+################
+################
+
 #Buscar todas as API's disponíveis no cluster:
 kubectl api-resources
 
@@ -18,3 +30,8 @@ watch -n0 kubectl get pod
 
 #Adicionar um container ao final de um arquivo de deployment:
 kubectl run nginx5 --image nginx --env tier=b --port 80 --dry-run=client -o yaml --cat /etc/hosts >> deploy.yml
+
+#Listar todos os pods:
+kubectl get po -A
+
+#Containerd:

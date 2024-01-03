@@ -60,6 +60,10 @@ kubectl get pods -n default
 5 Liste o nome de todos os pods no namespace default e salvar os nomes no arquivo /tmp/pods.
 
 kubectl get pods -n default >> /tmp/pods
+
+#Correção
+kubectl get pods -o name -n default >> /tmp/pods
+
 cat /tmp/pods
 
 ========================
@@ -76,6 +80,9 @@ kubectl exec -it ex-3 -c ex-3-nginx
 
 kubectl get pod ex-1 -o yaml >> /tmp/pod1
 cat /tmp/pod1
+
+#Correção. Quando pede todos os detalhes de um objeto é SEMPRE describe:
+kubectl describe pod ex-1 -o yaml >> /tmp/pod1
 
 ========================
 
@@ -99,9 +106,13 @@ kubectl edit pod ex-2
 
 11 Obtenha a versão do imagem do container do CoreDNS localizado no namespace kube-system e salve em /tmp/core-image.
 
-kubectl get pod coredns-5d78c9869d-hx72g -n kube-system -o yaml | grep image:
-echo "v1.10.1" >> /tmp/core-image
+kubectl get pod coredns-5d78c9869d-hx72g -n kube-system -o yaml | grep -i image
+echo "registry.k8s.io/coredns/coredns:v1.10.1" >> /tmp/core-image
 cat /tmp/core-image
+
+Outra maneira com kubectl patch
+
+kubectl patch ex-
 
 ========================
 
@@ -155,6 +166,9 @@ kubectl run ex-14 --image busybox -o yaml >> ex-14.yml
  14   restartPolicy: Always
 
  kubectl exec -it ex-14 -- env >> /tmp/env-14
+
+ #Outra maneira mais rápida;
+ kubectl run ex-14 --image busybox -- sleep 3600
 
 ========================
 
@@ -211,11 +225,18 @@ spec:
 
 kubectl apply -f ex-17.yml
 
+#Jeito mais rápido
+kubectl create deploy deploy-1 --image ngix --port 80
+
 ========================
 
 18 Consulte o status do Deployment criado anteriormente.
 
 kubectl describe deploy ex-17
+
+#Correção:
+
+kubectl rollout status deploy deploy-1
 
 ========================
 
@@ -229,12 +250,24 @@ kubectl edit deploy ex-17
 
 kubectl get rs | grep ex-17
 
+#Melhor maneira
+kubectl get deploy --show-labels
+kubectl get rs -l=app=deploy-1
+kubectl get rs -l app=deploy-1
+
 ========================
 
 21 Altere a image do deployment para nginx:latest e adicione um motivo de causa.
 
 kubectl set image deploy ex-17 ex-17=nginx:alpine --record=true
 kubectl rollout history deploy ex-17
+
+#Correção:
+Para adicionar uma change cause na alteração do deploy:
+kubectl edit deploy-1
+
+em metadata.annotations:
+    kubernetes.io/change-cause: UPDATE
 
 ========================
 
@@ -249,6 +282,9 @@ kubectl rollout undo deploy ex-17 --to-revision=1
 kubectl describe deploy ex-17 | grep Image
 kubectl describe deploy ex-17 | grep Image >> /tmp/deploy-image
 cat /tmp/deploy-image
+
+#Correção
+Dar um vim no arquivo e deixar só o nome da imagem: "nginx"
 
 ========================
 
@@ -291,6 +327,9 @@ kubectl rollout history deploy ex-17
 kubectl describe deploy ex-17 | grep Image >> /tmp/deploy-image-pause
 cat /tmp/deploy-image-pause
 #Image:        nginx:alpine
+
+#Correção:
+deixar só "nginx:alpine" no arquivo.
 
 ========================
 
@@ -337,6 +376,8 @@ spec:
         command: ["sleep"]
         args: ["3600"]
 
+        #Poderia ser só args: ["3600"], pois a imagem do busybox já tem como entrypoint o sleep
+
 ========================
 
 31 Delete todos deployments no namespace default
@@ -357,6 +398,9 @@ metadata:
 data:
   IP: 10.0.0.1
   SERVER: nginx
+
+#mais rápido:
+kubectl create configmap env-configs --from-literal=ip=10.0.0.1 --from-literal=server=nginx --dry-run=client -o yaml >> cm.yml
 
 ========================
 
@@ -547,6 +591,9 @@ pass=minhasenhasupersegura
 echo "superadmin" | base64 #c3VwZXJhZG1pbg== | echo "c3VwZXJhZG1pbg==" | base64 -d
 echo "minhasenhasupersegura" | base64 #bWluaGFzZW5oYXN1cGVyc2VndXJh
 
+#Ao invés de criar um yaml na mão:
+kubectl create secret generic user-secret --from-literal=user=superadmin --from-literal=pass=minhasenhasupersegura --dry-run=client -o yaml >> secret.yml
+
 kubectl describe secret user-secret
 Name:         user-secret
 Namespace:    default
@@ -666,6 +713,9 @@ HOME=/root
 
 kubectl delete secret user-secret-kubectl
 kubectl create secret generic user-secret-kubectl --from-literal=user=newuser --from-literal=pass=minhanovasenhasegura
+
+#Correção. 
+Como vai ser feito edit, tem que converter pra base64 a string e dar um kubectl edit de fato.
 
 ========================
 
