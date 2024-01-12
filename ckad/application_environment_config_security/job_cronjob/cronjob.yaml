@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: meu-cronjob
+spec:
+  schedule: "* * * * * " # MINUTO / HORA / DIA / MES / DIA DA SEMANA
+  jobTemplate: #A partir daqui é como se estivesse criando um job apenas
+    spec:
+      completions: 5
+      parallelism: 5
+      template:
+        spec:
+          containers:
+          - name: meu-cronjobzao
+            image: ubuntu:latest
+            command:
+            - "/bin/sh"
+            - "-c"
+            - "echo MEU cronjobzao"
+          restartPolicy: OnFailure

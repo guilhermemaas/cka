@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: limit-ns
+spec:
+  limits:
+  - default:
+      memory: 64Mi
+    defaultRequest:
+      memory: 32Mi 
+    max:
+      cpu: "8"
+    min: 
+      cpu: "200m"
+    type: Container

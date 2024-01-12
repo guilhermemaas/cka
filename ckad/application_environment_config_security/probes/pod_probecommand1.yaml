@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: nginx
+  name: nginx-probe
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "512Mi"
+    livenessProbe:
+      initialDelaySeconds: 5 #Quantos segundos após o start do container vai fazer a checkagem, padrão 0 seg
+      periodSeconds: 5 #De quanto em quanto segundos vai executar o probe
+      successThreshold: 1 #Número de checagens para entender que está healthy. Só no Readiness que pode ser maior que 1
+      failureThreshold: 5 #Quantas vezes pra falhar, pra reiniciar o container. vezes seguidas?
+      exec:
+        command:
+        - cat
+        - /etc/nginx/conf.d/default.conf
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always

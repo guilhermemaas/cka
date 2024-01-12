@@ -2,13 +2,38 @@
 #Substituir strings:
 :%s/deploy-1/deploy-30
 
+cat ~/.vimrc 
+set expandtab
+set tabstop=2
+set shiftwidth=2
+
+
 #Selecionmar:
 v
 
 #Copiar múltiplas linhas?
+y
+
+#Paste
+P
 
 ################
 ################
+
+#Matchlabels é sempre dentro de spec, seja container ou pvc, por exemplo, ou svc
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+spec:
+  resources:
+    requests:
+      storage: 500Mi
+  accessModes:
+  - ReadWriteOnce
+  selector:
+    matchLabels:
+      db: mysql
 
 #Buscar todas as API's disponíveis no cluster:
 kubectl api-resources

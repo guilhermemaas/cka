@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: meu-job
+spec:
+  backoffLimit: 1 #Quantidade de vezes que vai tentar executar se der erro.
+  completions: 5 #Quantidade de vezes que o job vai rodar
+  parallelism: 2 #Quantidade de pods que vão ser executados ao mesmo tempo para concluir o job.
+  activeDeadlineSec: 1 #Quantidade máxima de segundos pra esse job executar.
+  template:
+    spec:
+      containers:
+      - image: ubuntu
+        name: job
+        command: ["/bin/sh", "-c", "echo Esse é o meu primeiro job"] #Ao invés de execuytar o CMD do Dockerfile, que seria o padrão. Vai executar esse command customizado.
+      restartPolicy: Never

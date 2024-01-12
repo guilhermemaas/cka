@@ -1,6 +1,36 @@
 PersistentVolumeClaim
 Um PersistentVolumeClaim (PVC) é uma solicitação de armazenamento por um usuário. É semelhante a um pod. Os pods consomem recursos do nó e os PVCs consomem recursos PV.
 
+####pv:
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongodb-pv
+spec:
+  capacity:
+    storage: 100Mi
+  hostPath:
+    path: /data-mongodb
+  accessModes:
+  - ReadWriteOnce
+
+####pvc:
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-pvc
+spec:
+  resources:
+    requests:
+      storage: 100Mi
+  accessModes:
+  - ReadWriteOnce
+  volumeName: mongodb-pv
+
+################################################
+################################################
+################################################
+
 Primeiro PVC:
 apiVersion: v1
 kind: PersistentVolumeClaim

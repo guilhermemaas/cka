@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: leitor-secrets
+subjects:
+- kind: ServiceAccount
+  name: leitor
+  namespace: default
+roleRef:
+  kind: Role #ClusterRole (Poderia ser)
+  name: leitor-secrets
+  apiGroup: rbac.authorization.k8s.io
+  

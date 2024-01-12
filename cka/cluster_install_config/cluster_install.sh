@@ -21,14 +21,13 @@ sysctl --system
 
 ###
 ###Runtime: Containerd
-apt update
-apt install containerd 
+apt update && apt install containerd 
 #Obs.: É instalado o runc também.
 
 #Criar arquivo de configuração do containerd:
 mkdir -p /etc/containerd
 containerd config default > /etc/containerd/config.toml
-systemctl status containerd
+systemctl restart containerd && systemctl status containerd
 
 ###
 ###k8s components:
@@ -36,13 +35,15 @@ kubeadm: the command to bootstrap the cluster.
 kubelet: the component that runs on all of the machines in your cluster and does things like starting pods and containers.
 kubectl: the command line util to talk to your cluster.
 
+#Static
+
+
 #Ubuntu 20.04:
 apt-get update && apt-get install -y apt-transport-https ca-certificates curl
 mkdir -p /etc/apt/keyrings/
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
-apt update
-apt install -y kubeadm kubelet kubectl
+apt update && apt install -y kubeadm kubelet kubectl
 
 #Configurar o kubectl
 mkdir -p $HOME/.kube
@@ -68,3 +69,4 @@ kubeadm join 192.168.1.106:6443 --token mncnsa.bwbrzq28lbzpstgs --discovery-toke
 #Instalar um CNI:
 kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
 
+#Obs.: Por padrão o kubernetes não resolve comunicação entre pods entre diferentes nós.
